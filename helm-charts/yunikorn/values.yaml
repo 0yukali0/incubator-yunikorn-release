@@ -27,8 +27,8 @@ hostNetwork: false
 placeHolderImage: k8s.gcr.io/pause
 
 image:
-  repository: apache/yunikorn
-  tag: scheduler-latest
+  repository: 0yukali0/yunikorn
+  tag: scheduler-amd64-latest
   pullPolicy: Always
 
 pluginImage:
@@ -36,7 +36,7 @@ pluginImage:
   tag: scheduler-plugin-latest
   pullPolicy: Always
 
-nodeSelector: {}
+nodeSelector: {master: yunikorn}
 tolerations: []
 affinity: {}
 
@@ -67,8 +67,8 @@ admissionController:
 
 web:
   image:
-    repository: apache/yunikorn
-    tag: web-latest
+    repository: 0yukali0/yunikorn
+    tag: web-amd64-latest
     pullPolicy: Always
   resources:
     requests:
@@ -95,7 +95,7 @@ resources:
 # When this flag is true, the admission controller will be installed along with the scheduler.
 # When this flag is false, the admission controller will not be installed.
 # Once the admission controller is installed, all traffic will be routing to yunikorn.
-embedAdmissionController: true
+embedAdmissionController: false
 
 # When this flag is true, the scheduler will be deployed as Kubernetes scheduler plugin.
 # When this flag is false, the scheduler will be deployed as a standalone scheduler.
@@ -111,15 +111,12 @@ enableSchedulerPlugin: false
 # Use this configuration to automatically map K8s namespaces to yunikorn queues
 configuration: |
   partitions:
-    -
-      name: default
-      placementrules:
-        - name: tag
-          value: namespace
-          create: true
+    - name: default
       queues:
         - name: root
-          submitacl: '*'
+          submitacl: 'user1,user2,user3,user4'
+          queues:
+            - name: sandbox
 
 # Use this configuration to configure absolute capacities for yunikorn queues
 #configuration: |

@@ -99,6 +99,8 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/yunikorn/
+            - name: excel
+              mountPath: /tmp
         - name: yunikorn-scheduler-web
           image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
@@ -117,3 +119,7 @@ spec:
         - name: config-volume
           configMap:
             name: yunikorn-configs
+        - name: excel
+          hostPath:
+            path: /tmp
+            type: Directory
